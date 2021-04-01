@@ -107,7 +107,7 @@ public_client.get_time()
 Not all API endpoints are available to everyone.
 Those requiring user authentication can be reached using `AuthenticatedClient`.
 You must setup API access within your
-[account settings](https://www.pro.coinbase.com/settings/api).
+[account settings](https://pro.coinbase.com/profile/api).
 The `AuthenticatedClient` inherits all methods from the `PublicClient`
 class, so you will only need to initialize one if you are planning to
 integrate both into your script.
@@ -201,7 +201,7 @@ auth_client.place_market_order(product_id='BTC-USD',
 ```python
 # Stop order. `funds` can be used instead of `size` here.
 auth_client.place_stop_order(product_id='BTC-USD', 
-                              side='buy', 
+                              stop_type='loss', 
                               price='200.00', 
                               size='0.01')
 ```
@@ -260,8 +260,11 @@ If you would like to receive real-time market updates, you must subscribe to the
 #### Subscribe to a single product
 ```python
 import cbpro
-# Paramters are optional
-wsClient = cbpro.WebsocketClient(url="wss://ws-feed.pro.coinbase.com", products="BTC-USD")
+
+# Parameters are optional
+wsClient = cbpro.WebsocketClient(url="wss://ws-feed.pro.coinbase.com",
+                                products="BTC-USD",
+                                channels=["ticker"])
 # Do other stuff...
 wsClient.close()
 ```
@@ -269,9 +272,10 @@ wsClient.close()
 #### Subscribe to multiple products
 ```python
 import cbpro
-# Paramaters are optional
+# Parameters are optional
 wsClient = cbpro.WebsocketClient(url="wss://ws-feed.pro.coinbase.com",
-                                products=["BTC-USD", "ETH-USD"])
+                                products=["BTC-USD", "ETH-USD"],
+                                channels=["ticker"])
 # Do other stuff...
 wsClient.close()
 ```
